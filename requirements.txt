@@ -5,6 +5,7 @@ numpy==1.24.2
 pillow==9.5.0
 psutil
 ffmpeg
+filters 
 ffmpeg-python
 pyrogram==2.0.102
 py-tgcalls==0.9.7
