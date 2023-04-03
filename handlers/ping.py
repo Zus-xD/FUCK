@@ -8,7 +8,7 @@ import psutil
 from handlers import StartTime
 from helpers.filters import command
 from telegram.utils.helpers import escape_markdown, mention_html
-from config import BOT_USERNAME, SUPPORT_GROUP, PING_IMG, BOT_NAME
+from config import SUPPORT_GROUP, PING_IMG, BOT_NAME
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -37,10 +37,8 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-@Client.on_message(command(["ping", "repo", "anon", "alive"]) & filters.group & ~filters.edited & ~filters.private)
-
+@Client.on_message(command(["ping", "repo", "herox", "alive"]) & filters.group & ~filters.edited & ~filters.private)
 async def help(client: Client, message: Message):
-    await message.delete()
     boottime = time.time()
     bot_uptime = escape_markdown(get_readable_time((time.time() - StartTime)))
     cpu = psutil.cpu_percent(interval=0.5)
@@ -49,23 +47,20 @@ async def help(client: Client, message: Message):
     start = datetime.now()
     end = datetime.now()
     resp = (end - start).microseconds / 1000
-    await message.reply_sticker("CAACAgUAAxkBAAEENxZiNtPdibVkMsjLZrUG9NK4hotHQgAC2wEAAoM12VSdN9ujxVtnUyME")
     rahul = await message.reply_photo(
         photo=f"{PING_IMG}",
-        caption="🍑 ᴩɪɴɢɪɴɢ... 🍑",
-    )
-    await rahul.edit_text(
-        f"""<b> ᴩᴏɴɢ ʙᴀʙʏ ! 🍑</b>\n  🏓 `{resp} ᴍs`\n\n<b><u>{BOT_NAME} sʏsᴛᴇᴍ sᴛᴀᴛs:</u></b>\n\n• ᴜᴩᴛɪᴍᴇ : {bot_uptime}\n• ᴄᴩᴜ : {cpu}%\n• ᴅɪsᴋ : {disk}%\n• ʀᴀᴍ : {mem}""",
+        caption=f"<b> ᴩᴏɴɢ ! </b>\n 🏓 {resp} ᴍs\n\n<b><u>{BOT_NAME} sʏsᴛᴇᴍ sᴛᴀᴛs:</u></b>\n\n• ᴜᴩᴛɪᴍᴇ : {bot_uptime}\n• ᴄᴩᴜ : {cpu}%\n• ᴅɪsᴋ : {disk}%\n• ʀᴀᴍ : {mem}",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "💖 sᴜᴘᴘᴏʀᴛ 💖", url=f"https://t.me/{SUPPORT_GROUP}"
+                        "💖 sᴜᴘᴘᴏʀᴛ ", url=f"https://t.me/{SUPPORT_GROUP}"
                     ),
                     InlineKeyboardButton(
-                        "🙄 sᴏᴜʀᴄᴇ 🙄", url="https://github.com/AnonymousR1025/FallenMusic"
+                        "sᴏᴜʀᴄᴇ", url="https://github.com/herox-xd/Tricky-anonmusic"
                     )
                 ]
             ]
         ),
     )
+    await message.delete()  # delete the original command message
