@@ -1,7 +1,7 @@
 import asyncio
 
 from helpers.filters import command
-from config import BOT_USERNAME as bu, START_IMG
+from config import START_IMG
 from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -19,7 +19,7 @@ async def start_(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "ᴀᴅᴅ ᴍᴇ", url=f"https://t.me/{bu}?startgroup=true"
+                        "ᴀᴅᴅ ᴍᴇ", url=f"https://t.me/Rosiexrobot?startgroup=true"
                        ),
                   ]
             ]
