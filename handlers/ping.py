@@ -1,4 +1,4 @@
-import os
+.import os
 import asyncio
 import time
 from datetime import datetime
@@ -48,7 +48,7 @@ async def help(client: Client, message: Message):
     end = datetime.now()
     resp = (end - start).microseconds / 1000
     rahul = await message.reply_photo(
-        photo=f"{PING_IMG}",
+        photo=PING_IMG,
         caption=f"<b> ᴩᴏɴɢ ! </b>\n 🏓 {resp} ᴍs\n\n<b><u>{BOT_NAME} sʏsᴛᴇᴍ sᴛᴀᴛs:</u></b>\n\n• ᴜᴩᴛɪᴍᴇ : {bot_uptime}\n• ᴄᴩᴜ : {cpu}%\n• ᴅɪsᴋ : {disk}%\n• ʀᴀᴍ : {mem}",
         reply_markup=InlineKeyboardMarkup(
             [
