@@ -1,16 +1,15 @@
-import os
-import asyncio
-import time
-from datetime import datetime
-
 import psutil
+
+from time import time
+
+from telegram.utils.helpers import escape_markdown
+
+from pyrogram import Client, filters
+from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from handlers import StartTime
 from helpers.filters import command
-from telegram.utils.helpers import escape_markdown, mention_html
-from config import BOT_USERNAME, SUPPORT_GROUP, PING_IMG, BOT_NAME
-from pyrogram import Client, filters
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from config import SUPPORT_GROUP, PING_IMG, BOT_NAME
 
 
 def get_readable_time(seconds: int) -> str:
@@ -37,30 +36,25 @@ def get_readable_time(seconds: int) -> str:
     return ping_time
 
 
-@Client.on_message(command(["ping", "repo", "herox", "alive"]) & filters.group & ~filters.edited & ~filters.private)
-async def help(client: Client, message: Message):
-    boottime = time.time()
-    bot_uptime = escape_markdown(get_readable_time((time.time() - StartTime)))
+@Client.on_message(command(["ping", "repo", "axen", "alive"]) & filters.group & ~filters.edited)
+async def ping(_, message: Message):
+    start = time()
+    bot_uptime = escape_markdown(get_readable_time((time() - StartTime)))
     cpu = psutil.cpu_percent(interval=0.5)
     mem = psutil.virtual_memory().percent
     disk = psutil.disk_usage("/").percent
-    start = datetime.now()
-    end = datetime.now()
-    resp = (end - start).microseconds / 1000
-    rahul = await message.reply_photo(
+    end = time()
+    resp = end - start
+    await message.reply_photo(
         photo=PING_IMG,
         caption=f"<b> ᴩᴏɴɢ ! </b>\n 🏓 {resp} ᴍs\n\n<b><u>{BOT_NAME} sʏsᴛᴇᴍ sᴛᴀᴛs:</u></b>\n\n• ᴜᴩᴛɪᴍᴇ : {bot_uptime}\n• ᴄᴩᴜ : {cpu}%\n• ᴅɪsᴋ : {disk}%\n• ʀᴀᴍ : {mem}",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(
-                        "sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_GROUP}"
-                    ),
-                    InlineKeyboardButton(
-                        "sᴏᴜʀᴄᴇ", url=f"https://t.me/NightHighs"
-                    )
+                    InlineKeyboardButton("sᴜᴘᴘᴏʀᴛ", url=f"https://t.me/{SUPPORT_GROUP}"),
+                    InlineKeyboardButton("sᴏᴜʀᴄᴇ", url=f"https://t.me/NightHighs")
                 ]
             ]
-        ),
+        )
     )
     await message.delete()  # delete the original command message
