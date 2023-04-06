@@ -24,8 +24,7 @@ from callsmusic.callsmusic import client as USER
 from config import DURATION_LIMIT, SUPPORT_GROUP
 
 
-async def transcode(filename: str) -> None:
-    (
+async def transcode(filename):
         ffmpeg.input(filename).output("input.raw", format="s16le", acodec="pcm_s16le", ac=2, ar="48k").overwrite_output().run_async()
         os.remove(filename)
 
