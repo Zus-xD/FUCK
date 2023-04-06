@@ -5,6 +5,7 @@ numpy==1.24.2
 pillow==9.5.0
 psutil
 ffmpeg
+youtube_dl
 filters 
 ffmpeg-python
 pyrogram==1.4.16
