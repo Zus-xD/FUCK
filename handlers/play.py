@@ -1,34 +1,40 @@
 import os
 from os import path
+from typing import List, Tuple
+import asyncio
 from pyrogram import Client, filters
 from pyrogram.types import Message, Voice, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
 from pyrogram.errors import UserAlreadyParticipant
-from callsmusic import callsmusic, queues
-from callsmusic.callsmusic import client as USER
-from helpers.admins import get_administrators
 import requests
 import aiohttp
-from youtube_search import YoutubeSearch
+import youtube_dl
 import converter
-from downloaders import youtube
-from config import DURATION_LIMIT, SUPPORT_GROUP
-from helpers.filters import command
-from helpers.decorators import errors
-from helpers.errors import DurationLimitError
-from helpers.gets import get_url, get_file_name
-import aiofiles
 import ffmpeg
 from pytgcalls import StreamType
 from pytgcalls.types.input_stream import InputAudioStream
 from pytgcalls.types.input_stream import InputStream
+from helpers.admins import get_administrators
+from helpers.filters import command
+from helpers.decorators import errors
+from helpers.errors import DurationLimitError
+from helpers.gets import get_url, get_file_name
+from callsmusic import callsmusic, queues
+from callsmusic.callsmusic import client as USER
+from config import DURATION_LIMIT, SUPPORT_GROUP
 
 
-def transcode(filename):
-    ffmpeg.input(filename).output("input.raw", format='s16le', acodec='pcm_s16le', ac=2, ar='48k').overwrite_output().run() 
+async def transcode(filename: str) -> None:
+    (
+        ffmpeg.input(filename)
+        .output("input.raw", format="s16le", acodec="pcm_s16le", ac=2, ar="48k")
+        .overwrite_output()
+        .run_async()
+    )
     os.remove(filename)
 
+
 # Convert seconds to mm:ss
-def convert_seconds(seconds):
+def convert_seconds(seconds: int) -> str:
     seconds = seconds % (24 * 3600)
     seconds %= 3600
     minutes = seconds // 60
@@ -37,10 +43,9 @@ def convert_seconds(seconds):
 
 
 # Convert hh:mm:ss to seconds
-def time_to_seconds(time):
+def time_to_seconds(time: str) -> int:
     stringt = str(time)
-    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(':'))))
-
+    return sum(int(x) * 60 ** i for i, x in enumerate(reversed(stringt.split(":"))))
 
 @Client.on_message(
     command(["play", "p", "fuck"])
