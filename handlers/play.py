@@ -1,5 +1,6 @@
 import os
 from os import path
+from youtube_search import YoutubeSearch
 from typing import List, Tuple
 import asyncio
 from pyrogram import Client, filters
